@@ -22,6 +22,11 @@ export default function App() {
 
     const [selected_X, setselected_X] = useState(property[0]);
     const [selected_Y, setselected_Y] = useState(property[1]);
+    const [Active, SetActive] = useState({
+        setosa: false,
+        versicolor: false,
+        virginica: false,
+    });
 
     const x = d3.scaleLinear()
     .nice()
@@ -32,6 +37,8 @@ export default function App() {
     .nice()
     .domain(d3.extent(iris_data, d => d[selected_Y]))
     .range([height - padding, padding]);
+
+    const label=Array.from(new Set(iris_data.map(({species})=>species)))
 
     return (
         <div className = "top">
@@ -78,17 +85,33 @@ export default function App() {
 
             <div className="chart">
                 <svg width = { width } height = { height }>
+    
                     <g>
-                        {iris_data.map((item, i) => (
-                            <circle key={i} 
+                        {iris_data.map((item) => (
+                            <circle 
                             cx={x(item[selected_X])} 
                             cy={y(item[selected_Y])} 
                             r="5" 
-                            fill={dataColor[item.species]} 
+                            fill={dataColor[item.species]}
+                            opacity={Active[item.species] ? 0 : 1}
                             />
                         ))} 
                     </g>
                 </svg>
+                
+                <label className="legend">
+                    {label.map((name) => (
+                        <div
+                        className={Active[name] ? "fade" : ""}
+                        onClick={() => SetActive({
+                            ...Active,
+                            [name]: !Active[name]
+                        })}
+                        >
+                            {name}
+                        </div>
+                    ))}
+                </label>
             </div>
         </div>
     )

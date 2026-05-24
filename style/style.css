@@ -5,17 +5,27 @@ body {
 
 h1 {
     margin: 0;
-    font-size: 30px;
+    font-size: 28px;
     color: white;
 
     background: steelblue;
-    padding: 15px;
+    padding: 21px 15px 10px 25px;
+}
+
+.chart {
+    display: flex;
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .controls {
     background: rgb(240, 240, 240);
     display: flex;
-    gap: 200px;
+    gap: 400px;
     padding: 30px;
 }
 
@@ -27,6 +37,10 @@ h1 {
 label {
     margin-bottom: 10px;
     font-style: italic;
+}
+
+.fade {
+    opacity: 0.5;
 }
 
 .Select {
