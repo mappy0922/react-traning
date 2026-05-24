@@ -37,9 +37,9 @@ export default function App() {
             <h1 className="title">scatter plot of iris data</h1>
 
             <div className="controls">
+                <div className="item">
 
-                <label>
-                    X :
+                    <label>x property</label>
                     <select
                         className = "Select"
                         value={selected_X}
@@ -53,10 +53,11 @@ export default function App() {
                             </option>
                         ))}
                     </select>
-                </label>
+                </div>
 
-                <label>
-                    Y :
+                <div className="item">
+
+                    <label>y property</label>
                     <select
                         className="Select"
                         value={selected_Y}
@@ -70,7 +71,7 @@ export default function App() {
                             </option>
                         ))}
                     </select>
-                </label>
+                </div>
 
             </div>
 
