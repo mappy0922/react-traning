@@ -16,8 +16,9 @@ const dataColor = {
 };
 
 export default function App() {
-    const width = 450;
-    const height = 450;
+    const width = 500;
+    const height = 500;
+    const padding = 70;
 
     const [selected_X, setselected_X] = useState(property[0]);
     const [selected_Y, setselected_Y] = useState(property[1]);
@@ -25,12 +26,12 @@ export default function App() {
     const x = d3.scaleLinear()
     .nice()
     .domain(d3.extent(iris_data, (d) => d[selected_X]))
-    .range([50, width - 50]);
+    .range([padding, width - padding]);
 
     const y = d3.scaleLinear()
     .nice()
     .domain(d3.extent(iris_data, d => d[selected_Y]))
-    .range([height - 50, 50]);
+    .range([height - padding, padding]);
 
     return (
         <div className = "top">

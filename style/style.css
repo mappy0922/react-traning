@@ -13,9 +13,10 @@ h1 {
 }
 
 .controls {
+    background: rgb(240, 240, 240);
     display: flex;
     gap: 200px;
-    margin: 30px;
+    padding: 30px;
 }
 
 .item {
