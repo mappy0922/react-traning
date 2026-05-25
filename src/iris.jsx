@@ -89,6 +89,7 @@ export default function App() {
                     <g>
                         {iris_data.map((item) => (
                             <circle 
+                            className="point"
                             cx={x(item[selected_X])} 
                             cy={y(item[selected_Y])} 
                             r="5" 
@@ -99,20 +100,45 @@ export default function App() {
                     </g>
                 </svg>
                 
-                <label className="legend">
-                    {label.map((name) => (
-                        <div
+                <svg width={ 150 } height={ 150 }>
+                    {label.map((name, i) => (
+                        <g 
+                        transform={`translate(0, ${50*i+30})`}
                         className={Active[name] ? "fade" : ""}
                         onClick={() => SetActive({
-                            ...Active,
+                            ...Active,//スプレッド構文(上書き処理に利用できる)
                             [name]: !Active[name]
                         })}
                         >
-                            {name}
-                        </div>
+                            <rect
+                            width="15"
+                            height="15"
+                            fill={dataColor[name]}
+                            />
+                            <text 
+                            className = "legend"
+                            x="25"
+                            y="13">
+                                {name}
+                            </text>
+                        </g>
                     ))}
-                </label>
+                </svg>
             </div>
         </div>
     )
 }
+
+/*
+{iris_data.map((item) => (
+    <circle 
+    cx={item[selected_X]*80} 
+    cy={height - item[selected_Y]*80} 
+    r="5" 
+    fill={dataColor[item.species]}
+    opacity={Active[item.species] ? 0 : 1}
+    />
+))}
+
+これで散布図調整できなかった
+*/

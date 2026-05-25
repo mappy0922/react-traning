@@ -16,10 +16,13 @@ h1 {
     display: flex;
 }
 
+.point {
+    transition: cx 0.7s,
+                cy 0.7s;
+}
+
 .legend {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    font-size: 18px;
 }
 
 .controls {
