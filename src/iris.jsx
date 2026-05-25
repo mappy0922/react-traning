@@ -35,8 +35,11 @@ export default function App() {
 
     const y = d3.scaleLinear()
     .nice()
-    .domain(d3.extent(iris_data, d => d[selected_Y]))
+    .domain(d3.extent(iris_data, (d) => d[selected_Y]))
     .range([height - padding, padding]);
+
+    const xline = d3.extent(iris_data, (d) => d[selected_X]);
+    const yline = d3.extent(iris_data, (d) => d[selected_Y]);
 
     const label=Array.from(new Set(iris_data.map(({species})=>species)))
 
@@ -88,6 +91,7 @@ export default function App() {
     
                     <g>
                         {iris_data.map((item) => (
+                            <>
                             <circle 
                             className="point"
                             cx={x(item[selected_X])} 
@@ -96,6 +100,22 @@ export default function App() {
                             fill={dataColor[item.species]}
                             opacity={Active[item.species] ? 0 : 1}
                             />
+                            <line
+                            x1={padding}
+                            y1={height - padding}
+                            x2={width - padding}
+                            y2={height - padding}
+                            stroke="gray"
+    
+                            />
+                            <line
+                            x1={padding}
+                            y1={height-padding}
+                            x2={padding}
+                            y2={padding}
+                            stroke="gray"
+                            />
+                            </>
                         ))} 
                     </g>
                 </svg>
