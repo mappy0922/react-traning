@@ -47,6 +47,7 @@ label {
 
 .fade {
     opacity: 0.5;
+    transition: all 0.7s;
 }
 
 .Select {

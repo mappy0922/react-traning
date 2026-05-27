@@ -56,12 +56,7 @@ export default function App() {
     .range([height - padding, padding]);
 
     /*--------------X軸目盛り線調整---------------*/
-    const xscale = d3.scaleLinear()
-    .domain(d3.extent(iris_data, (d) => d[selected_X]))
-    .nice()
-    .range([padding-20, width-padding]);
-
-    const [xmin,xmax] = xscale.domain();
+    const [xmin,xmax] = x.domain();
     const xstep = (selected_X==="sepalLength" || selected_X==="petalLength") ? 0.5 : 0.2;
 
     for (let i=xmin; Number(i.toFixed(1))<=xmax; i+=xstep) {
@@ -73,12 +68,7 @@ export default function App() {
     /*------------Y軸目盛り線調整---------------*/
     size = 0;
 
-    const yscale = d3.scaleLinear()
-    .domain(d3.extent(iris_data, (d) => d[selected_Y]))
-    .nice()
-    .range([height-padding, padding]);
-
-    const [ymin,ymax] = yscale.domain();
+    const [ymin,ymax] = y.domain();
     const ystep = (selected_Y==="sepalLength" || selected_Y==="petalLength") ? 0.5 : 0.2;
 
     for (let i=ymin; Number(i.toFixed(1))<=ymax; i+=ystep) {
@@ -166,16 +156,16 @@ export default function App() {
                         {xline[selected_X].map((v) => (
                             <> 
                             <line //X軸目盛り線位置
-                            x1={xscale(v)}
+                            x1={x(v)}
                             y1={height - padding}
-                            x2={xscale(v)}
+                            x2={x(v)}
                             y2={height - padding + 10}
                             stroke="gray"
                             />
 
                             <text //X軸目盛り線の値位置
                             className = "text"
-                            x={xscale(v)}
+                            x={x(v)}
                             y={height - padding + 25}
                             textAnchor="middle"
                             >
@@ -188,16 +178,16 @@ export default function App() {
                             <> 
                             <line //Y軸目盛り線位置
                             x1={padding-30}
-                            y1={yscale(v)}
+                            y1={y(v)}
                             x2={padding-20}
-                            y2={yscale(v)}
+                            y2={y(v)}
                             stroke="gray"
                             />
 
                             <text //Y軸目盛り線の値位置
                             className = "text"
-                            x={padding-30}
-                            y={yscale(v)}
+                            x={padding-35}
+                            y={y(v)}
                             textAnchor="end"
                             dominantBaseline="central"
                             >
