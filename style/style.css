@@ -17,12 +17,15 @@ h1 {
 }
 
 .point {
-    transition: cx 0.7s,
-                cy 0.7s;
+    transition: all 0.7s;
+}
+
+.text {
+    font-size: 12px;
 }
 
 .legend {
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .controls {
@@ -49,3 +52,4 @@ label {
 .Select {
     padding: 10px;
 }
+

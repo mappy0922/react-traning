@@ -15,10 +15,26 @@ const dataColor = {
     "virginica": "lightsalmon",
 };
 
+const xline = {
+    "sepalLength": [],
+    "sepalWidth": [],
+    "petalLength": [],
+    "petalWidth": [],
+}
+
+const yline = {
+    "sepalLength": [],
+    "sepalWidth": [],
+    "petalLength": [],
+    "petalWidth": [],
+}
+
 export default function App() {
     const width = 500;
     const height = 500;
     const padding = 70;
+
+    let size = 0;
 
     const [selected_X, setselected_X] = useState(property[0]);
     const [selected_Y, setselected_Y] = useState(property[1]);
@@ -28,25 +44,54 @@ export default function App() {
         virginica: false,
     });
 
+    /*----------------散布図調整----------------*/
     const x = d3.scaleLinear()
-    .nice()
     .domain(d3.extent(iris_data, (d) => d[selected_X]))
-    .range([padding, width - padding]);
+    .nice()
+    .range([padding-20, width - padding])
 
     const y = d3.scaleLinear()
-    .nice()
     .domain(d3.extent(iris_data, (d) => d[selected_Y]))
+    .nice()
     .range([height - padding, padding]);
 
-    const xline = d3.extent(iris_data, (d) => d[selected_X]);
-    const yline = d3.extent(iris_data, (d) => d[selected_Y]);
+    /*--------------X軸目盛り線調整---------------*/
+    const xscale = d3.scaleLinear()
+    .domain(d3.extent(iris_data, (d) => d[selected_X]))
+    .nice()
+    .range([padding-20, width-padding]);
+
+    const [xmin,xmax] = xscale.domain();
+    const xstep = (selected_X==="sepalLength" || selected_X==="petalLength") ? 0.5 : 0.2;
+
+    for (let i=xmin; Number(i.toFixed(1))<=xmax; i+=xstep) {
+        xline[selected_X][size++] = Number(i.toFixed(1));
+    }
+    /*----------------------------------------*/
+
+
+    /*------------Y軸目盛り線調整---------------*/
+    size = 0;
+
+    const yscale = d3.scaleLinear()
+    .domain(d3.extent(iris_data, (d) => d[selected_Y]))
+    .nice()
+    .range([height-padding, padding]);
+
+    const [ymin,ymax] = yscale.domain();
+    const ystep = (selected_Y==="sepalLength" || selected_Y==="petalLength") ? 0.5 : 0.2;
+
+    for (let i=ymin; Number(i.toFixed(1))<=ymax; i+=ystep) {
+        yline[selected_Y][size++] = Number(i.toFixed(1));
+    }
+    /*---------------------------------------*/
+
 
     const label=Array.from(new Set(iris_data.map(({species})=>species)))
 
     return (
         <div className = "top">
             <h1 className="title">scatter plot of iris data</h1>
-
             <div className="controls">
                 <div className="item">
 
@@ -90,8 +135,8 @@ export default function App() {
                 <svg width = { width } height = { height }>
     
                     <g>
+
                         {iris_data.map((item) => (
-                            <>
                             <circle 
                             className="point"
                             cx={x(item[selected_X])} 
@@ -100,21 +145,64 @@ export default function App() {
                             fill={dataColor[item.species]}
                             opacity={Active[item.species] ? 0 : 1}
                             />
-                            <line
-                            x1={padding}
+                        ))}
+
+                        <line //X軸
+                        x1={padding-20}
+                        y1={height - padding}
+                        x2={width - padding}
+                        y2={height - padding}
+                        stroke="gray"
+                        />
+
+                        <line //Y軸
+                        x1={padding-20}
+                        y1={height-padding}
+                        x2={padding-20}
+                        y2={padding}
+                        stroke="gray"
+                        />
+
+                        {xline[selected_X].map((v) => (
+                            <> 
+                            <line //X軸目盛り線位置
+                            x1={xscale(v)}
                             y1={height - padding}
-                            x2={width - padding}
-                            y2={height - padding}
-                            stroke="gray"
-    
-                            />
-                            <line
-                            x1={padding}
-                            y1={height-padding}
-                            x2={padding}
-                            y2={padding}
+                            x2={xscale(v)}
+                            y2={height - padding + 10}
                             stroke="gray"
                             />
+
+                            <text //X軸目盛り線の値位置
+                            className = "text"
+                            x={xscale(v)}
+                            y={height - padding + 25}
+                            textAnchor="middle"
+                            >
+                                {v.toString()}
+                            </text>
+                            </>
+                        ))}
+
+                        {yline[selected_Y].map((v) => (
+                            <> 
+                            <line //Y軸目盛り線位置
+                            x1={padding-30}
+                            y1={yscale(v)}
+                            x2={padding-20}
+                            y2={yscale(v)}
+                            stroke="gray"
+                            />
+
+                            <text //Y軸目盛り線の値位置
+                            className = "text"
+                            x={padding-30}
+                            y={yscale(v)}
+                            textAnchor="end"
+                            dominantBaseline="central"
+                            >
+                                {v.toString()}
+                            </text>
                             </>
                         ))} 
                     </g>
@@ -123,7 +211,7 @@ export default function App() {
                 <svg width={ 150 } height={ 150 }>
                     {label.map((name, i) => (
                         <g 
-                        transform={`translate(0, ${50*i+30})`}
+                        transform={`translate(0, ${35*i+30})`}
                         className={Active[name] ? "fade" : ""}
                         onClick={() => SetActive({
                             ...Active,//スプレッド構文(上書き処理に利用できる)
